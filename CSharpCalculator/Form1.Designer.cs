@@ -52,12 +52,13 @@
             this.BackspaceBtn = new System.Windows.Forms.Button();
             this.PercentBtn = new System.Windows.Forms.Button();
             this.MemoryReturnBtn = new System.Windows.Forms.Button();
+            this.MemoryMinus = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // SubtractBtn
             // 
             this.SubtractBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SubtractBtn.Location = new System.Drawing.Point(224, 97);
+            this.SubtractBtn.Location = new System.Drawing.Point(224, 125);
             this.SubtractBtn.Name = "SubtractBtn";
             this.SubtractBtn.Size = new System.Drawing.Size(75, 23);
             this.SubtractBtn.TabIndex = 0;
@@ -68,7 +69,7 @@
             // DivideBtn
             // 
             this.DivideBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DivideBtn.Location = new System.Drawing.Point(224, 68);
+            this.DivideBtn.Location = new System.Drawing.Point(224, 96);
             this.DivideBtn.Name = "DivideBtn";
             this.DivideBtn.Size = new System.Drawing.Size(75, 23);
             this.DivideBtn.TabIndex = 1;
@@ -79,7 +80,7 @@
             // MultiplyBtn
             // 
             this.MultiplyBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MultiplyBtn.Location = new System.Drawing.Point(224, 39);
+            this.MultiplyBtn.Location = new System.Drawing.Point(224, 67);
             this.MultiplyBtn.Name = "MultiplyBtn";
             this.MultiplyBtn.Size = new System.Drawing.Size(75, 23);
             this.MultiplyBtn.TabIndex = 2;
@@ -90,7 +91,7 @@
             // DecimalBtn
             // 
             this.DecimalBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DecimalBtn.Location = new System.Drawing.Point(151, 154);
+            this.DecimalBtn.Location = new System.Drawing.Point(151, 183);
             this.DecimalBtn.Name = "DecimalBtn";
             this.DecimalBtn.Size = new System.Drawing.Size(75, 23);
             this.DecimalBtn.TabIndex = 3;
@@ -101,7 +102,7 @@
             // ZeroBtn
             // 
             this.ZeroBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ZeroBtn.Location = new System.Drawing.Point(76, 154);
+            this.ZeroBtn.Location = new System.Drawing.Point(76, 183);
             this.ZeroBtn.Name = "ZeroBtn";
             this.ZeroBtn.Size = new System.Drawing.Size(75, 23);
             this.ZeroBtn.TabIndex = 4;
@@ -112,18 +113,18 @@
             // MemoryClearBtn
             // 
             this.MemoryClearBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MemoryClearBtn.Location = new System.Drawing.Point(2, 154);
+            this.MemoryClearBtn.Location = new System.Drawing.Point(2, 38);
             this.MemoryClearBtn.Name = "MemoryClearBtn";
             this.MemoryClearBtn.Size = new System.Drawing.Size(75, 23);
             this.MemoryClearBtn.TabIndex = 5;
-            this.MemoryClearBtn.Text = "M-";
+            this.MemoryClearBtn.Text = "MC";
             this.MemoryClearBtn.UseVisualStyleBackColor = true;
             this.MemoryClearBtn.Click += new System.EventHandler(this.MemoryClearBtn_Click);
             // 
             // ThreeBtn
             // 
             this.ThreeBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ThreeBtn.Location = new System.Drawing.Point(151, 125);
+            this.ThreeBtn.Location = new System.Drawing.Point(151, 154);
             this.ThreeBtn.Name = "ThreeBtn";
             this.ThreeBtn.Size = new System.Drawing.Size(75, 23);
             this.ThreeBtn.TabIndex = 6;
@@ -134,7 +135,7 @@
             // TwoBtn
             // 
             this.TwoBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TwoBtn.Location = new System.Drawing.Point(76, 125);
+            this.TwoBtn.Location = new System.Drawing.Point(76, 154);
             this.TwoBtn.Name = "TwoBtn";
             this.TwoBtn.Size = new System.Drawing.Size(75, 23);
             this.TwoBtn.TabIndex = 7;
@@ -145,7 +146,7 @@
             // OneBtn
             // 
             this.OneBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OneBtn.Location = new System.Drawing.Point(2, 125);
+            this.OneBtn.Location = new System.Drawing.Point(2, 154);
             this.OneBtn.Name = "OneBtn";
             this.OneBtn.Size = new System.Drawing.Size(75, 23);
             this.OneBtn.TabIndex = 8;
@@ -156,7 +157,7 @@
             // SixBtn
             // 
             this.SixBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SixBtn.Location = new System.Drawing.Point(151, 97);
+            this.SixBtn.Location = new System.Drawing.Point(151, 125);
             this.SixBtn.Name = "SixBtn";
             this.SixBtn.Size = new System.Drawing.Size(75, 23);
             this.SixBtn.TabIndex = 9;
@@ -167,7 +168,7 @@
             // FiveBtn
             // 
             this.FiveBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FiveBtn.Location = new System.Drawing.Point(76, 96);
+            this.FiveBtn.Location = new System.Drawing.Point(76, 125);
             this.FiveBtn.Name = "FiveBtn";
             this.FiveBtn.Size = new System.Drawing.Size(75, 23);
             this.FiveBtn.TabIndex = 10;
@@ -178,7 +179,7 @@
             // FourBtn
             // 
             this.FourBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FourBtn.Location = new System.Drawing.Point(2, 96);
+            this.FourBtn.Location = new System.Drawing.Point(2, 125);
             this.FourBtn.Name = "FourBtn";
             this.FourBtn.Size = new System.Drawing.Size(75, 23);
             this.FourBtn.TabIndex = 11;
@@ -189,7 +190,7 @@
             // NineBtn
             // 
             this.NineBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NineBtn.Location = new System.Drawing.Point(151, 68);
+            this.NineBtn.Location = new System.Drawing.Point(151, 96);
             this.NineBtn.Name = "NineBtn";
             this.NineBtn.Size = new System.Drawing.Size(75, 23);
             this.NineBtn.TabIndex = 12;
@@ -200,7 +201,7 @@
             // EightBtn
             // 
             this.EightBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EightBtn.Location = new System.Drawing.Point(76, 67);
+            this.EightBtn.Location = new System.Drawing.Point(76, 96);
             this.EightBtn.Name = "EightBtn";
             this.EightBtn.Size = new System.Drawing.Size(75, 23);
             this.EightBtn.TabIndex = 13;
@@ -211,7 +212,7 @@
             // SevenBtn
             // 
             this.SevenBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SevenBtn.Location = new System.Drawing.Point(2, 67);
+            this.SevenBtn.Location = new System.Drawing.Point(2, 96);
             this.SevenBtn.Name = "SevenBtn";
             this.SevenBtn.Size = new System.Drawing.Size(75, 23);
             this.SevenBtn.TabIndex = 14;
@@ -222,7 +223,7 @@
             // MemoryAddBtn
             // 
             this.MemoryAddBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MemoryAddBtn.Location = new System.Drawing.Point(151, 39);
+            this.MemoryAddBtn.Location = new System.Drawing.Point(151, 38);
             this.MemoryAddBtn.Name = "MemoryAddBtn";
             this.MemoryAddBtn.Size = new System.Drawing.Size(75, 23);
             this.MemoryAddBtn.TabIndex = 15;
@@ -233,7 +234,7 @@
             // ClearEntryBtn
             // 
             this.ClearEntryBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ClearEntryBtn.Location = new System.Drawing.Point(76, 38);
+            this.ClearEntryBtn.Location = new System.Drawing.Point(76, 67);
             this.ClearEntryBtn.Name = "ClearEntryBtn";
             this.ClearEntryBtn.Size = new System.Drawing.Size(75, 23);
             this.ClearEntryBtn.TabIndex = 16;
@@ -244,7 +245,7 @@
             // ClearBtn
             // 
             this.ClearBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ClearBtn.Location = new System.Drawing.Point(2, 38);
+            this.ClearBtn.Location = new System.Drawing.Point(2, 67);
             this.ClearBtn.Name = "ClearBtn";
             this.ClearBtn.Size = new System.Drawing.Size(75, 23);
             this.ClearBtn.TabIndex = 17;
@@ -265,7 +266,7 @@
             // PlusBtn
             // 
             this.PlusBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PlusBtn.Location = new System.Drawing.Point(224, 125);
+            this.PlusBtn.Location = new System.Drawing.Point(224, 154);
             this.PlusBtn.Name = "PlusBtn";
             this.PlusBtn.Size = new System.Drawing.Size(75, 23);
             this.PlusBtn.TabIndex = 19;
@@ -276,7 +277,7 @@
             // EqualsBtn
             // 
             this.EqualsBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EqualsBtn.Location = new System.Drawing.Point(224, 154);
+            this.EqualsBtn.Location = new System.Drawing.Point(224, 183);
             this.EqualsBtn.Name = "EqualsBtn";
             this.EqualsBtn.Size = new System.Drawing.Size(75, 23);
             this.EqualsBtn.TabIndex = 20;
@@ -287,28 +288,29 @@
             // BackspaceBtn
             // 
             this.BackspaceBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BackspaceBtn.Location = new System.Drawing.Point(2, 183);
+            this.BackspaceBtn.Location = new System.Drawing.Point(151, 67);
             this.BackspaceBtn.Name = "BackspaceBtn";
-            this.BackspaceBtn.Size = new System.Drawing.Size(149, 23);
+            this.BackspaceBtn.Size = new System.Drawing.Size(75, 23);
             this.BackspaceBtn.TabIndex = 21;
-            this.BackspaceBtn.Text = "Backspace";
+            this.BackspaceBtn.Text = "Delete";
             this.BackspaceBtn.UseVisualStyleBackColor = true;
             this.BackspaceBtn.Click += new System.EventHandler(this.BackspaceBtn_Click);
             // 
             // PercentBtn
             // 
             this.PercentBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PercentBtn.Location = new System.Drawing.Point(151, 183);
+            this.PercentBtn.Location = new System.Drawing.Point(2, 183);
             this.PercentBtn.Name = "PercentBtn";
             this.PercentBtn.Size = new System.Drawing.Size(75, 23);
             this.PercentBtn.TabIndex = 22;
             this.PercentBtn.Text = "%";
             this.PercentBtn.UseVisualStyleBackColor = true;
+            this.PercentBtn.Click += new System.EventHandler(this.PercentBtn_Click);
             // 
             // MemoryReturnBtn
             // 
             this.MemoryReturnBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MemoryReturnBtn.Location = new System.Drawing.Point(224, 183);
+            this.MemoryReturnBtn.Location = new System.Drawing.Point(224, 38);
             this.MemoryReturnBtn.Name = "MemoryReturnBtn";
             this.MemoryReturnBtn.Size = new System.Drawing.Size(75, 23);
             this.MemoryReturnBtn.TabIndex = 23;
@@ -316,11 +318,23 @@
             this.MemoryReturnBtn.UseVisualStyleBackColor = true;
             this.MemoryReturnBtn.Click += new System.EventHandler(this.MemoryReturnBtn_Click);
             // 
+            // MemoryMinus
+            // 
+            this.MemoryMinus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MemoryMinus.Location = new System.Drawing.Point(76, 38);
+            this.MemoryMinus.Name = "MemoryMinus";
+            this.MemoryMinus.Size = new System.Drawing.Size(75, 23);
+            this.MemoryMinus.TabIndex = 24;
+            this.MemoryMinus.Text = "M-";
+            this.MemoryMinus.UseVisualStyleBackColor = true;
+            this.MemoryMinus.Click += new System.EventHandler(this.MemoryMinus_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(305, 217);
+            this.Controls.Add(this.MemoryMinus);
             this.Controls.Add(this.MemoryReturnBtn);
             this.Controls.Add(this.PercentBtn);
             this.Controls.Add(this.BackspaceBtn);
@@ -381,6 +395,7 @@
         private System.Windows.Forms.Button BackspaceBtn;
         private System.Windows.Forms.Button PercentBtn;
         private System.Windows.Forms.Button MemoryReturnBtn;
+        private System.Windows.Forms.Button MemoryMinus;
     }
 }
 
