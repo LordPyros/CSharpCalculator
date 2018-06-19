@@ -6,6 +6,7 @@ namespace CSharpCalculator
 {
     public partial class Form1 : Form
     {
+
         // The first number for the operation
         decimal firstNumber = 0;
         // The second number for the operation
@@ -14,17 +15,13 @@ namespace CSharpCalculator
         decimal memoryNumber = 0;
         // string containing the symbol for the current operation
         string operation = "";
-        // Flag used to indicate whether an operater button has been pressed
-        bool operatorUsed;
-        // Flag to indicate whether the second number of the operation has began to be entered yet
-        bool secondNumberStarted;
-        // Flag used to indicate when a number cannot be edited. eg after pressing enquals for an operation, the result cannot be appended too or backspaced, It must be cleared
-        bool unmodifiableNumber;
-        // Flag to indicate when an operator button was the last button to be pressed,
-        // Used to prevent unexpected results from pressing operators multiple times.
-        bool operatorPressedLast;
-        // Flag to indicate when the current result is an error
-        bool error;
+
+        // state 0 = no numbers or first number being entered
+        // state 1 = first number and an operator used
+        // state 2 = first number and an operator used and second number
+        // state 3 = first and second numbers with an operator and equals pressed
+        // state 9 = error
+        int state = 0;
 
         public Form1()
         {
@@ -37,52 +34,51 @@ namespace CSharpCalculator
         // Number Method
         private void NumberButtonPressed(int number)
         {
-            // Clear everything if equals was pressed last or if theres an error and then a number is entered.
-            if (unmodifiableNumber || error)
+            switch (state)
             {
-                ResetVariables();
-            }
-            // Reset operatorPressedLast flag
-            operatorPressedLast = false;
+                case 0:
+                case 3:
+                case 9:
+                    if (state == 3 || state == 9)
+                    {
+                        ResetVariables();
+                    }
+                    // the screen currently reads "0"
+                    if (ScreenTb.Text == "0")
+                    {
+                        // display the new digit on the screen
+                        ScreenTb.Text = number.ToString();
+                    }
+                    // the screen is displaying a number other than "0"
+                    else
+                    {
+                        // display the currently displayed number and concatinate the new digit on the end
+                        ScreenTb.Text = ScreenTb.Text + number.ToString();
+                    }
+                    break;
+                case 1:
+                    ScreenTb.Text = number.ToString();
+                    state = 2;
+                    break;
+                case 2:
+                    // the second number has already been partially entered and is not 0
+                    if (ScreenTb.Text != "0")
+                    {
+                        // display the currently displayed number and concatinate the new digit on the end
+                        ScreenTb.Text = ScreenTb.Text + number.ToString();
+                    }
+                    // no part of the second number has been entered yet
+                    else
+                    {
+                        // display the new digit on the screen
+                        ScreenTb.Text = number.ToString();
+                    }
+                    break;
 
-            // No current operator, so the first number either has not started to be entered yet or is still being entered
-            if (!operatorUsed)
-            {
-                // the screen currently reads "0"
-                if (ScreenTb.Text == "0")
-                {
-                    // display the new digit on the screen
-                    ScreenTb.Text = number.ToString();
-                }
-                // the screen is displaying a number other than "0"
-                else
-                {
-                    // display the currently displayed number and concatinate the new digit on the end
-                    ScreenTb.Text = ScreenTb.Text + number.ToString();
-                }
-            }
-            // There is an operator so a first number already exists
-            else
-            {
-                // the second number has already been partially entered and is not 0
-                if (secondNumberStarted && ScreenTb.Text != "0")
-                {
-                    // display the currently displayed number and concatinate the new digit on the end
-                    ScreenTb.Text = ScreenTb.Text + number.ToString();
-                }
-                // no part of the second number has been entered yet
-                else
-                {
-                    // display the new digit on the screen
-                    ScreenTb.Text = number.ToString();
-                    // the second number has now been started so set the secondNumberStarted flag to true
-                    secondNumberStarted = true;
-                }
             }
             // prevent a number longer than 25 characters being entered
             if (ScreenTb.Text.Length > 25)
                 BackSpace();
-
         }
 
         // Number Buttons
@@ -148,236 +144,188 @@ namespace CSharpCalculator
         // Equals Button
         private void EqualsBtn_Click(object sender, EventArgs e)
         {
-            if (!error)
+            switch (state)
             {
-                // Reset operatorPressedLast flag
-                operatorPressedLast = false;
-
-                // do nothing if an operator has not been used
-                if (operatorUsed)
-                {
-                    // set the currently displayed number as the second number variable if its the first time the equals button was pressed (if the equals
-                    // button is pressed several times in a row, this will only happen on the first press)
-                    if (!unmodifiableNumber)
+                case 0:
+                    // Do nothing
+                    break;
+                case 1:
+                    // Do nothing
+                    break;
+                case 2:
+                    if (ScreenTb.Text == "-")
+                        Error();
+                    else
+                    {
                         secondNumber = Decimal.Parse(ScreenTb.Text);
-
-                    // do calculation
+                        switch (operation)
+                        {
+                            case "+":
+                                AddTwoNumbers(firstNumber, Decimal.Parse(ScreenTb.Text));
+                                break;
+                            case "-":
+                                SubtractTwoNumbers(firstNumber, Decimal.Parse(ScreenTb.Text));
+                                break;
+                            case "/":
+                                DivideTwoNumbers(firstNumber, Decimal.Parse(ScreenTb.Text));
+                                break;
+                            case "*":
+                                MultiplyTwoNumbers(firstNumber, Decimal.Parse(ScreenTb.Text));
+                                break;
+                        }
+                        if (state != 9)
+                            state = 3;
+                    }
+                    break;
+                case 3:
                     switch (operation)
                     {
                         case "+":
-                            Addition();
+                            AddTwoNumbers(secondNumber, Decimal.Parse(ScreenTb.Text));
                             break;
                         case "-":
-                            try
-                            {
-                                ScreenTb.Text = SubtractTwoNumbers(firstNumber, secondNumber).ToString();
-                                TrimNumber();
-                            }
-                            catch
-                            {
-                                Error();
-                            }
+                            SubtractTwoNumbers(Decimal.Parse(ScreenTb.Text), secondNumber);
                             break;
                         case "/":
-                            try
-                            {
-
-                                ScreenTb.Text = DivideTwoNumbers(firstNumber, secondNumber).ToString();
-                                TrimNumber();
-                            }
-                            catch
-                            {
-                                Error();
-                            }
+                            DivideTwoNumbers(Decimal.Parse(ScreenTb.Text), secondNumber);
                             break;
                         case "*":
-                            Multiplication();
+                            MultiplyTwoNumbers(secondNumber, Decimal.Parse(ScreenTb.Text));
                             break;
                     }
-
-                    // For Subtraction and division, save the currently displayed number to the first number variable
-                    if (operation == "-" || operation == "/")
-                    {
-                        firstNumber = Decimal.Parse(ScreenTb.Text);
-                    }
-                    // For addition and multiplication, save the second number as the first number only the first time equals is pressed.
-                    else if (!unmodifiableNumber)
-                    {
-                        if (operation == "+" || operation == "*")
-                        {
-                            firstNumber = secondNumber;
-                        }
-                    }
-
-                    // set number as unmodifiable to prevent a digit being concatinated on the end if the user presses a number button.
-                    // eg. after pressing equals then a number, the old number should be deleted and be replaced by a new digit.
-                    unmodifiableNumber = true;
-                }
+                    break;
+                case 9:
+                    // Do nothing
+                    break;
             }
         }
 
         // Operation Method
         private void Operation(string op)
         {
-            if (!error)
+            switch (state)
             {
-                // do nothing except update the operator if 2 operators button have been pressed in a row
-                if (!operatorPressedLast)
-                {
-                    // equals button wasn't the last button pressed
-                    if (!unmodifiableNumber)
+                case 0:
+                    if (op == "-" && ScreenTb.Text == "0")
+                        ScreenTb.Text = "-";
+                    else if (ScreenTb.Text == "-")
                     {
-                        // check if there is a current operator
-                        if (operatorUsed)
-                        {
-                            // do calculation
-                            switch (op)
-                            {
-                                case "+":
-                                    Addition();
-                                    break;
-                                case "-":
-                                    try
-                                    {
-                                        ScreenTb.Text = SubtractTwoNumbers(firstNumber, Decimal.Parse(ScreenTb.Text)).ToString();
-                                        TrimNumber();
-                                    }
-                                    catch
-                                    {
-                                        Error();
-                                    }
-                                    break;
-                                case "/":
-                                    try
-                                    {
-                                        ScreenTb.Text = DivideTwoNumbers(firstNumber, Decimal.Parse(ScreenTb.Text)).ToString();
-                                        TrimNumber();
-                                    }
-                                    catch
-                                    {
-                                        Error();
-                                    }
-                                    break;
-                                case "*":
-                                    Multiplication();
-                                    break;
-                            }
-                            // operation has just been done so set the secondNumberStarted flag to false
-                            secondNumberStarted = false;
-                        }
+                        // Do nothing
                     }
-                    // equals button was the last button pressed
                     else
                     {
-                        // the number is unmodifiable so the second number cannot have been started - set secondNumberStarted variable to false
-                        secondNumberStarted = false;
-                        // allow the number on the current display to be modified
-                        unmodifiableNumber = false;
-
+                        // save the number on screen as the first number
+                        firstNumber = Decimal.Parse(ScreenTb.Text);
+                        // set the current operator
+                        operation = op;
+                        // set the state to 1
+                        state = 1;
                     }
-                    // set the number on the display to the first number variable
+                    break;
+                case 1:
+                    if (op == "-")
+                    {
+                        ScreenTb.Text = "-";
+                        state = 2;
+                    }
+                    else
+                        operation = op;
+                    break;
+                case 2:
+                    // If minus is already displayed and is pressed again, do nothing
+                    if (ScreenTb.Text == "-" && operation == "-")
+                    {
+                        // Do Nothing
+                    }
+                    else
+                    {
+                        // do calculation
+                        switch (operation)
+                        {
+                            case "+":
+                                AddTwoNumbers(firstNumber, Decimal.Parse(ScreenTb.Text));
+                                break;
+                            case "-":
+                                SubtractTwoNumbers(firstNumber, Decimal.Parse(ScreenTb.Text));
+                                break;
+                            case "/":
+                                DivideTwoNumbers(firstNumber, Decimal.Parse(ScreenTb.Text));
+                                break;
+                            case "*":
+                                MultiplyTwoNumbers(firstNumber, Decimal.Parse(ScreenTb.Text));
+                                break;
+                        }
+                        firstNumber = Decimal.Parse(ScreenTb.Text);
+                        operation = op;
+                        if (state != 9)
+                            state = 1;
+                    }
+                    break;
+                case 3:
                     firstNumber = Decimal.Parse(ScreenTb.Text);
-                    // set the operatorUsed flag to true
-                    operatorUsed = true;
-                }
-                // set the current operation
-                operation = op;
-                // set the operatorPressedLast flag to true
-                operatorPressedLast = true;
+                    operation = op;
+                    state = 1;
+                    break;
             }
         }
 
         // Operation Methods
-        private decimal AddTwoNumbers(decimal firstNumber, decimal secondNumber)
+        private void AddTwoNumbers(decimal firstNumber, decimal secondNumber)
         {
-            return firstNumber + secondNumber;
+            try
+            {
+                ScreenTb.Text = (firstNumber + secondNumber).ToString();
+                TrimNumber();
+            }
+            catch
+            {
+                Error();
+            }
         }
-        private decimal SubtractTwoNumbers(decimal firstNumber, decimal secondNumber)
+        private void SubtractTwoNumbers(decimal firstNumber, decimal secondNumber)
         {
-            return firstNumber - secondNumber;
+            try
+            {
+                ScreenTb.Text = (firstNumber - secondNumber).ToString();
+                TrimNumber();
+            }
+            catch
+            {
+                Error();
+            }
         }
-        private decimal DivideTwoNumbers(decimal firstNumber, decimal secondNumber)
+        private void DivideTwoNumbers(decimal firstNumber, decimal secondNumber)
         {
             // prevent divide by zero exceptions
             if (firstNumber == 0 || secondNumber == 0)
-                return 0;
-            // divide numbers
-            return firstNumber / secondNumber;
-        }
-        private decimal MultiplyTwoNumbers(decimal firstNumber, decimal secondNumber)
-        {
-            return firstNumber * secondNumber;
-        }
-        private void Addition()
-        {
-            try
+                // Avoid divide by zero exeption, display "0" and set state back to 0
+                ResetVariables();
+            else
             {
-                ScreenTb.Text = AddTwoNumbers(firstNumber, Decimal.Parse(ScreenTb.Text)).ToString();
-                TrimNumber();
-            }
-            catch
-            {
-                Error();
-            }
-        }
-        private void Multiplication()
-        {
-            try
-            {
-                ScreenTb.Text = MultiplyTwoNumbers(firstNumber, Decimal.Parse(ScreenTb.Text)).ToString();
-                TrimNumber();
-            }
-            catch
-            {
-                Error();
-            }
-        }
-        private decimal GetPercentageOfTwoNumbers(decimal firstNumber, decimal secondNumber)
-        {
-            // Normal percentage calculations
-            // Check that an operator has been used and neither number is "0"
-            if (operatorUsed)
-            {
-                if (firstNumber != 0 && ScreenTb.Text != "0")
+                try
                 {
-                    switch (operation)
-                    {
-                        case "/":
-                            unmodifiableNumber = true;
-                            // divide first number by number on screen, then times by 100
-                            return (firstNumber / Decimal.Parse(ScreenTb.Text)) * 100;
-                        case "+":
-                            unmodifiableNumber = true;
-                            // divide number on screen by 100, then add first number
-                            return (Decimal.Parse(ScreenTb.Text) / 100) + firstNumber;
-                        case "-":
-                            unmodifiableNumber = true;
-                            // divide number on screen by 100, then subtract it from first number
-                            return firstNumber - (Decimal.Parse(ScreenTb.Text) / 100);
-                        case "*":
-                            unmodifiableNumber = true;
-                            // divide number on screen by 100, then multiply it by first number
-                            return (Decimal.Parse(ScreenTb.Text) / 100) * firstNumber;
-                    }
+                    ScreenTb.Text = (firstNumber / secondNumber).ToString();
+                    TrimNumber();
                 }
-            }
-
-            // percentage calculation on only one number
-            // check that no operator has been used and the screen is not displaying "0"
-            if (!operatorUsed && ScreenTb.Text != "0")
-            {
-                unmodifiableNumber = true;
-                // Divide the number on screen by 100
-                return Decimal.Parse(ScreenTb.Text) / 100;
-            }
-
-            // *** why do i reset varibles here??
-            ResetVariables();
-
-            // All other situation should result in a zero
-            return 0;
+                catch
+                {
+                    Error();
+                }
+            }  
         }
-
+        private void MultiplyTwoNumbers(decimal firstNumber, decimal secondNumber)
+        {
+            try
+            {
+                ScreenTb.Text = (firstNumber * secondNumber).ToString();
+                TrimNumber();
+            }
+            catch
+            {
+                Error();
+            }
+        }
+       
         // Clear Buttons
         private void ClearBtn_Click(object sender, EventArgs e)
         {
@@ -385,21 +333,53 @@ namespace CSharpCalculator
         }
         private void ClearEntryBtn_Click(object sender, EventArgs e)
         {
-            ScreenTb.Text = "0";
-            unmodifiableNumber = false;
-            error = false;
+            switch (state)
+            {
+                case 0:
+                    ScreenTb.Text = "0";
+                    break;
+                case 1:
+                    ScreenTb.Text = "0";
+                    state = 0;
+                    break;
+                case 2:
+                    ScreenTb.Text = "0";
+                    break;
+                case 3:
+                case 9:
+                    ResetVariables();
+                    break;
+            }
+            
         }
 
         // Memory Methods
         private void MemoryAddBtn_Click(object sender, EventArgs e)
         {
-            if (!error)
+            if (state != 9 && ScreenTb.Text != "0" && ScreenTb.Text != "-")
                 memoryNumber += Decimal.Parse(ScreenTb.Text);
         }
         private void MemoryReturnBtn_Click(object sender, EventArgs e)
         {
             if (memoryNumber != 0)
-                ScreenTb.Text = memoryNumber.ToString();
+            {
+                switch (state)
+                {
+                    case 0:
+                    case 2:
+                        ScreenTb.Text = memoryNumber.ToString();
+                        break;
+                    case 1:
+                        ScreenTb.Text = memoryNumber.ToString();
+                        state = 2;
+                        break;
+                    case 3:
+                    case 9:
+                        ResetVariables();
+                        ScreenTb.Text = memoryNumber.ToString();
+                        break;
+                }
+            }
         }
         private void MemoryClearBtn_Click(object sender, EventArgs e)
         {
@@ -407,20 +387,36 @@ namespace CSharpCalculator
         }
         private void MemoryMinus_Click(object sender, EventArgs e)
         {
-            if (!error)
+            if (state != 9 && ScreenTb.Text != "0" && ScreenTb.Text != "-")
                 memoryNumber -= Decimal.Parse(ScreenTb.Text);
         }
 
         // Decimal Point Button
         private void DecimalBtn_Click(object sender, EventArgs e)
         {
-            // check that the currently displayed number does not already contain a decimal point
-            if (!ScreenTb.Text.Contains('.') && !unmodifiableNumber && !error)
+            switch (state)
             {
-                // concatinate a decimal point to the end of the currently displayed number
-                ScreenTb.Text += ".";
-                // If the decimal point is accepted, set the operatorPressedLast flag to false
-                operatorPressedLast = false;
+                case 0:
+                case 2:
+                    // Make sure that the current number doesn't already contain a decimal point and that its not too long to add too
+                    if (!ScreenTb.Text.Contains('.')  && ScreenTb.Text.Length <= 25)
+                        // concatinate a decimal point to the end of the currently displayed number
+                        ScreenTb.Text += ".";
+                    break;
+                case 1:
+                    // second number has not been started so set screen to display "."
+                    ScreenTb.Text = ".";
+                    // set the new state
+                    state = 2;
+                    break;
+                case 3:
+                    // pressing decimal after the equals button clears the last operation and displays a decimal point
+                    ResetVariables();
+                    ScreenTb.Text = ".";
+                    break;
+                case 9:
+                    // Do nothing
+                    break;
             }
         }
 
@@ -431,24 +427,77 @@ namespace CSharpCalculator
         }
         private void BackSpace()
         {
-            // check the if current displays is allowed to be edited
-            if (!unmodifiableNumber && !error)
+            switch (state)
             {
-                // remove the last number/character in the display
-                ScreenTb.Text = ScreenTb.Text.Remove(ScreenTb.Text.Length - 1);
-                // afterwards if no number exists, display "0"
-                if (ScreenTb.Text == "")
-                    ScreenTb.Text = "0";
+                case 0:
+                case 2:
+                    // remove the last number/character in the display
+                    ScreenTb.Text = ScreenTb.Text.Remove(ScreenTb.Text.Length - 1);
+                    // afterwards if no number exists, display "0"
+                    if (ScreenTb.Text == "")
+                        ScreenTb.Text = "0";
+                    break;
+                case 1:
+                    // remove the last number/character in the display
+                    ScreenTb.Text = ScreenTb.Text.Remove(ScreenTb.Text.Length - 1);
+                    // afterwards if no number exists, display "0"
+                    if (ScreenTb.Text == "")
+                        ScreenTb.Text = "0";
+                    // update the first number variable
+                    firstNumber = Decimal.Parse(ScreenTb.Text);
+                    break;
+                case 3:
+                case 9:
+                    // Do Nothing
+                    break;
             }
         }
 
         // Percentage Button
         private void PercentBtn_Click(object sender, EventArgs e)
         {
-            if (!unmodifiableNumber && !error)
+            switch (state)
             {
-                ScreenTb.Text = GetPercentageOfTwoNumbers(firstNumber, Decimal.Parse(ScreenTb.Text)).ToString();
-                TrimNumber();
+                case 0:
+                    // if display doesn't read "0", divide the displayed number by 100
+                    if (ScreenTb.Text != "0" && ScreenTb.Text != "-")
+                        ScreenTb.Text = (Decimal.Parse(ScreenTb.Text) / 100).ToString();
+                    break;
+                case 2:
+                    if (ScreenTb.Text != "-")
+                    {
+                        switch (operation)
+                        {
+                            case "/":
+                                // divide first number by number on screen, then times by 100
+                                ScreenTb.Text = ((firstNumber / Decimal.Parse(ScreenTb.Text)) * 100).ToString();
+                                break;
+                            case "+":
+                                // divide number on screen by 100, then add first number
+                                ScreenTb.Text = ((Decimal.Parse(ScreenTb.Text) / 100) + firstNumber).ToString();
+                                break;
+                            case "-":
+                                // divide number on screen by 100, then subtract it from first number
+                                ScreenTb.Text = (firstNumber - (Decimal.Parse(ScreenTb.Text) / 100)).ToString();
+                                break;
+                            case "*":
+                                // divide number on screen by 100, then multiply it by first number
+                                ScreenTb.Text = ((Decimal.Parse(ScreenTb.Text) / 100) * firstNumber).ToString();
+                                break;
+                        }
+                        state = 0;
+                    }
+                    break;
+                
+                case 3:
+                    // if display doesn't read "0", divide the displayed number by 100
+                    if (ScreenTb.Text != "0")
+                        ScreenTb.Text = (Decimal.Parse(ScreenTb.Text) / 100).ToString();
+                    break;
+                case 1:
+                case 9:
+                    // Do nothing
+                    break;
             }
         }
 
@@ -472,8 +521,8 @@ namespace CSharpCalculator
                     {
                         // display an "e" at the end to signify an error 
                         ScreenTb.Text += "e";
-                        // set the error flag to true
-                        error = true;
+                        // set the error state
+                        state = 9;
                     }
                 }
                 // the number is too large to fit in the screen, display an error
@@ -483,32 +532,28 @@ namespace CSharpCalculator
                     ScreenTb.Text.Remove(ScreenTb.Text.Length - (ScreenTb.Text.Length - 25));
                     // display an "e" at the end to signify an error 
                     ScreenTb.Text += "e";
-                    // set the error flag to true
-                    error = true;
+                    // set the error state
+                    state = 9;
                 }
             }
         }
-                
+
         // Error Method
         private void Error()
         {
             ScreenTb.Text = "e";
-            error = true;
+            state = 9;
         }
 
         // Reset Variables Method
         private void ResetVariables()
         {
             // reset/clear variables
-            operatorUsed = false;
-            operatorPressedLast = false;
-            secondNumberStarted = false;
-            unmodifiableNumber = false;
-            error = false;
             firstNumber = 0;
             secondNumber = 0;
             operation = "";
             ScreenTb.Text = "0";
+            state = 0;
         }
     }
 }
